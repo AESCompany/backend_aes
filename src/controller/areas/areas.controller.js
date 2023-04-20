@@ -2,20 +2,30 @@ const { matchedData } = require("express-validator");
 const { area } = require("../../models");
 const handlerHttpError = require("../../utils/handlerHttpError");
 
+/**
+ * !TODO: consulta de todas las áreas creadas!
+ * @param {*} req
+ * @param {*} res
+ */
 const getAllAreas = async (req, res) => {
   try {
     const result = await area.find({});
 
     if (!result.length) {
-      handlerHttpError(res, "No hay áreas creadas !", 404);
+      handlerHttpError(res, "No hay áreas creadas!", 404);
     }
 
     res.status(200).json(result);
   } catch (err) {
-    handlerHttpError(res, "Error en la petición, contacta soporte", 500);
+    handlerHttpError(res, "Algo inesperado sucedio, contacta a soporte", 500);
   }
 };
 
+/**
+ * !TODO: Creación de una nueva área
+ * @param {*} req
+ * @param {*} res
+ */
 const createNewArea = async (req, res) => {
   const dataArea = matchedData(req, { location: ["body"] });
   const { name } = dataArea;
@@ -28,19 +38,20 @@ const createNewArea = async (req, res) => {
         name: name,
       });
       await newArea.save();
-      res.status(201).json(newArea);
+      res.status(201).json({ message: "área creada con exito!" });
     } else {
-      handlerHttpError(
-        res,
-        `ERROR_ESE_AREA_CON_ESE_NAME_YA_EXISTE_VALIDA_OTRO_NOMBRE`,
-        400
-      );
+      handlerHttpError(res, "Ya existe un área con el mismo nombre", 404);
     }
   } catch (err) {
-    handlerHttpError(res, `ERROR_OCURRIDO_EN_PETICION`, 400);
+    handlerHttpError(res, "Algo inesperado sucedio, contacta a soporte", 500);
   }
 };
 
+/**
+ * !TODO: Eliminar un área existente
+ * @param {*} req
+ * @param {*} res
+ */
 const deleteAreaById = async (req, res) => {
   try {
     req = matchedData(req);
@@ -49,14 +60,14 @@ const deleteAreaById = async (req, res) => {
     const isExist = await area.findById({ _id: id });
 
     if (!isExist) {
-      handlerHttpError(res, `${isExist.name} no existe!`, 404);
+      handlerHttpError(res, "${isExist.name} no existe!", 404);
     }
 
-    const result = await area.findByIdAndDelete({ _id: id });
+    await area.findByIdAndDelete({ _id: id });
 
     res.status(200).json({ message: `${isExist.name} ha sido eliminado.` });
   } catch (err) {
-    handlerHttpError(res, `ERROR_OCURRIDO_EN_PETICION`, 400);
+    handlerHttpError(res, "Algo inesperado sucedio, contacta a soporte", 400);
   }
 };
 
