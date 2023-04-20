@@ -11,7 +11,9 @@ const authLogin = async (req, res) => {
   const { email, password } = req;
 
   try {
-    const isExits = await user.findOne({ email: email });
+    const isExits = await user
+      .findOne({ email: email })
+      .populate("roles", "name");
 
     if (!isExits) {
       return handlerHttpError(res, "Usuario o email no coincide", 404);
@@ -30,9 +32,12 @@ const authLogin = async (req, res) => {
     const token = createdToken(isExits);
 
     res.cookie("login", token);
-    res
-      .status(202)
-      .json({ success: true, token, id: isExits._id, role: isExits.roles });
+    res.status(202).json({
+      success: true,
+      token,
+      id: isExits._id,
+      role: isExits.roles.name,
+    });
   } catch (error) {
     handlerHttpError(res, "Datos incorrectos", 400);
   }
@@ -73,7 +78,7 @@ const changePassword = async (req, res) => {
       isExist.password,
       newpassword
     );
-    console.log(validNewPass);
+
     if (validNewPass) {
       return handlerHttpError(
         res,

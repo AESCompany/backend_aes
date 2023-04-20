@@ -1,5 +1,5 @@
 const { matchedData } = require("express-validator");
-const { user } = require("../../models/");
+const { user, role } = require("../../models/");
 const handlerHttpError = require("../../utils/handlerHttpError");
 const { validExtensionImage } = require("../../libs/validExtensionFiles");
 
@@ -47,7 +47,6 @@ const createUser = async (req, res) => {
     await data.save();
     res.status(201).json({ message: "Usuario creado!" });
   } catch (error) {
-    console.error(error);
     handlerHttpError(res, "Error al crear o email duplicado", 400);
   }
 };
@@ -115,16 +114,21 @@ const deleteUser = async (req, res) => {
   try {
     req = matchedData(req);
     const { id } = req;
+    const superAdmin = await role.findOne({ name: "superadmin" });
     const isExist = await user.findOne({ _id: id });
 
-    console.log(isExist);
-
     if (!isExist) {
-      handlerHttpError(res, "No se encontro el usuario", 400);
-      return;
+      return handlerHttpError(res, "No se encontro el usuario", 400);
     }
 
-    /* await user.delete({ _id: id }); */
+    if (isExist.roles.equals(superAdmin._id)) {
+      return handlerHttpError(
+        res,
+        "Este usuario no puede ser eliminado !",
+        404
+      );
+    }
+    await user.delete({ _id: id });
 
     res.status(200).json({ message: "Usuario eliminado" });
   } catch (error) {
