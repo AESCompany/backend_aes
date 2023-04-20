@@ -26,7 +26,7 @@ const authLogin = async (req, res) => {
 
     //401
     if (!validatePassword) {
-      return handlerHttpError(res, "La contraseña es erronea", 404);
+      return handlerHttpError(res, "La contraseña es erronea", 401);
     }
 
     const token = createdToken(isExits);

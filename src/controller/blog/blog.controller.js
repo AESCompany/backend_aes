@@ -7,7 +7,6 @@ const {
   validExtensionFile,
 } = require("../../libs/validExtensionFiles");
 
-const { clearText } = require("../../libs/validateTextFiltro");
 /**
  *!TODO: obtener la lista de blogs
  * ?no lleva trycatch por que hay otro punto de control blog.index
@@ -125,7 +124,7 @@ const updateBlogById = async (req, res) => {
     );
 
     await blog.updateSlug(id);
-    /*console.log(result) */
+
     res.status(200).json({ message: "blog actualizado!" });
   } catch (error) {
     handlerHttpError(res, `No se pudo actualizar verifica los campos`, 400);

@@ -29,6 +29,7 @@ const SearchOrAllBlogs = async (req, res) => {
     }
   }
 
+  //obtiene la lista de blogs
   try {
     const result = await blogController.getAllBlogs();
 
@@ -38,7 +39,6 @@ const SearchOrAllBlogs = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error(error);
     handlerHttpError(res, "ERR_LIST_CONTROLLER", 500);
   }
 };
