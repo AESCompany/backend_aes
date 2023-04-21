@@ -1,12 +1,13 @@
 const { matchedData } = require("express-validator");
 const { resources } = require("../models");
 const handlerHttpError = require("../utils/handlerHttpError");
-const {
-  validExtensionFile,
-  validExtensionImage,
-  validResources,
-} = require("../libs/validExtensionFiles");
+const { validResources } = require("../libs/validExtensionFiles");
 
+/**
+ *!TODO: lista de recursos!
+ * @param {*} req
+ * @param {*} res
+ */
 const showAllItems = async (req, res) => {
   try {
     const result = await resources.find({});
@@ -16,6 +17,12 @@ const showAllItems = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: carga de documentos, imagenes, videos
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const uploadItems = async (req, res) => {
   try {
     const { title, subtitle, url, origin, status } = req.body;
@@ -43,11 +50,16 @@ const uploadItems = async (req, res) => {
 
     res.send({ succes: true, data: "upload" });
   } catch (error) {
-    console.error(error);
     handlerHttpError(res, "Archivo no subido", 500);
   }
 };
 
+/**
+ * !TODO: actualizar el status del recurso
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const updateResourceStatus = async (req, res) => {
   try {
     const { id } = req.params;

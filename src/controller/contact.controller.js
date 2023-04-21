@@ -1,6 +1,13 @@
 const handlerHttpError = require("../utils/handlerHttpError");
 const { contact } = require("../models");
 const { clearText } = require("../libs/validateTextFiltro");
+
+/**
+ * !TODO: lista de los mensajes
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const showMessage = async (req, res) => {
   try {
     const data = await contact.find({});
@@ -13,6 +20,11 @@ const showMessage = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: detalle del contacto
+ * @param {*} req
+ * @param {*} res
+ */
 const getContactbyId = async (req, res) => {
   const { id } = req.params;
   try {
@@ -23,6 +35,12 @@ const getContactbyId = async (req, res) => {
     handlerHttpError(res, "Error, id no valido o no existe.", 500);
   }
 };
+
+/**
+ * !TODO: Formulario de envio de contacto
+ * @param {*} req
+ * @param {*} res
+ */
 const registerFrom = async (req, res) => {
   try {
     const { name, email, phone, title, content } = req.body;

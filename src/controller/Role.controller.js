@@ -1,4 +1,3 @@
-const { matchedData } = require("express-validator");
 const { role } = require("../models");
 const { handlerHttpError } = require("../utils/handlerHttpError");
 

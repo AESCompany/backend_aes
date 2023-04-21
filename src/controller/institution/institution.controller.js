@@ -97,11 +97,15 @@ const createInstitution = async (req, res) => {
 
     res.status(201).json({ message: "ya existes pero agregado!" });
   } catch (err) {
-    console.error(err);
     handlerHttpError(res, `ERROR_OCURRIDO_EN_PETICION`, 400);
   }
 };
 
+/**
+ * !TODO: Actualizar status institucion!
+ * @param {*} req
+ * @param {*} res
+ */
 const putInstitutionById = async (req, res) => {
   const { id } = req.params;
   const { view } = matchedData(req);
