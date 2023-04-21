@@ -15,7 +15,7 @@ const authLogin = async (req, res) => {
       .findOne({ email: email })
       .populate("roles", "name");
 
-    if (!isExits) {
+    if (!isExits || !isExits.status) {
       return handlerHttpError(res, "Usuario o email no coincide", 404);
     }
 
