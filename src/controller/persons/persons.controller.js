@@ -2,8 +2,11 @@ const { matchedData } = require("express-validator");
 const { person } = require("../../models");
 const handlerHttpError = require("../../utils/handlerHttpError");
 
-//listar todos los customers
-
+/**
+ * !TODO: listado de todas las personas registradas
+ * @param {*} req
+ * @param {*} res
+ */
 const getAllPersons = async (req, res) => {
   const { email } = req.query;
 
@@ -18,6 +21,12 @@ const getAllPersons = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: Registro de las personas al evento
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const RegisterPerson = async (req, res) => {
   const { email, fullname, events } = matchedData(req);
   let newPerson;

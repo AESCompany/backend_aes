@@ -3,11 +3,19 @@ const { person } = require("../../models");
 const { institution } = require("../../models");
 const handlerHttpError = require("../../utils/handlerHttpError");
 
+/**
+ * !TODO: listado de todos las intituciones
+ * @param {*} req
+ * @param {*} res
+ */
 const getAllInstitution = async (req, res) => {
   const { email } = req.query;
 
   if (email) {
     try {
+      /**
+       * !TODO: busqueda por query
+       */
       const result = await institution
         .find({
           email: { $regex: new RegExp(`${email}`, "i") },
@@ -27,6 +35,11 @@ const getAllInstitution = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: Detalle de la institucion
+ * @param {*} req
+ * @param {*} res
+ */
 const getInstitutionById = async (req, res) => {
   const { id } = req.params;
 
@@ -42,20 +55,17 @@ const getInstitutionById = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: Formulario de la institucion
+ * @param {*} req
+ * @param {*} res
+ */
 const createInstitution = async (req, res) => {
   const { organization, email, fullname, phone, post, city, area } =
     matchedData(req);
 
-  console.log(organization, email, fullname, phone, post, city, area);
   try {
     let findPerson = await person.findOne({ email: email });
-
-    if (!findPerson) {
-      new person({
-        fullname,
-        email,
-      });
-    }
 
     const newInsti = new institution({
       organization: organization,
@@ -67,13 +77,25 @@ const createInstitution = async (req, res) => {
       area: area,
     });
 
-    let resultInsti = await newInsti.save();
+    await newInsti.save();
 
-    findPerson.institution = [...findPerson.institution, resultInsti._id];
+    if (!findPerson) {
+      let newPerson = new person({
+        fullname,
+        email,
+      });
+
+      newPerson.institution = [...newPerson.institution, newPerson._id];
+
+      await newPerson.save();
+      return res.status(201).json({ message: "Usuario registrado!" });
+    }
+
+    findPerson.institution = [...findPerson.institution, newInsti._id];
 
     await findPerson.save();
 
-    res.status(201).json({ message: "Registro exitoso!" });
+    res.status(201).json({ message: "ya existes pero agregado!" });
   } catch (err) {
     console.error(err);
     handlerHttpError(res, `ERROR_OCURRIDO_EN_PETICION`, 400);

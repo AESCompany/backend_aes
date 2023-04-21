@@ -1,5 +1,5 @@
 const { matchedData } = require("express-validator");
-const { area } = require("../../models");
+const { areas } = require("../../models");
 const handlerHttpError = require("../../utils/handlerHttpError");
 
 /**
@@ -9,7 +9,7 @@ const handlerHttpError = require("../../utils/handlerHttpError");
  */
 const getAllAreas = async (req, res) => {
   try {
-    const result = await area.find({});
+    const result = await areas.find({});
 
     if (!result.length) {
       handlerHttpError(res, "No hay áreas creadas!", 404);
@@ -31,10 +31,10 @@ const createNewArea = async (req, res) => {
   const { name } = dataArea;
 
   try {
-    const existsName = await area.findOne({ name: name });
+    const existsName = await areas.findOne({ name: name });
 
     if (!existsName) {
-      const newArea = new area({
+      const newArea = new areas({
         name: name,
       });
       await newArea.save();
@@ -57,13 +57,13 @@ const deleteAreaById = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
 
-    const isExist = await area.findById({ _id: id });
+    const isExist = await areas.findById({ _id: id });
 
     if (!isExist) {
       handlerHttpError(res, "${isExist.name} no existe!", 404);
     }
 
-    await area.findByIdAndDelete({ _id: id });
+    await areas.findByIdAndDelete({ _id: id });
 
     res.status(200).json({ message: `${isExist.name} ha sido eliminado.` });
   } catch (err) {

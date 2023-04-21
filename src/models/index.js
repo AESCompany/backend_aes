@@ -9,7 +9,7 @@ const models = {
   person: require("./nosql/Person"),
   tag: require("./nosql/Tag"),
   organization: require("./nosql/Organization"),
-  area: require("./nosql/Area"),
+  areas: require("./nosql/Area"),
   institution: require("./nosql/Institution"),
   specialist: require("./nosql/Specialist"),
   contact: require("./nosql/Contact"),

@@ -1,8 +1,14 @@
 const { matchedData } = require("express-validator");
 const { person } = require("../../models");
 const { organization } = require("../../models");
+
 const handlerHttpError = require("../../utils/handlerHttpError");
 
+/**
+ * !TODO: lista de registros
+ * @param {*} req
+ * @param {*} res
+ */
 const getAllOrganizationsForms = async (req, res) => {
   try {
     const { email } = req.query;
@@ -22,6 +28,11 @@ const getAllOrganizationsForms = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: obtener el detalle del registro
+ * @param {*} req
+ * @param {*} res
+ */
 const getOrganizationById = async (req, res) => {
   const { id } = req.params;
   req = matchedData(req);
@@ -35,6 +46,12 @@ const getOrganizationById = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: Registro de organizacion!
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const createOrganization = async (req, res) => {
   const {
     organizations,
@@ -44,21 +61,14 @@ const createOrganization = async (req, res) => {
     phone,
     post,
     assistants,
+    city,
     social,
+    view,
     area,
   } = matchedData(req);
-  let newPerson;
-  //busco si existe
-  let findPerson = await person.findOne({ email: email });
 
   try {
-    //si no encuentra crea
-    if (!findPerson) {
-      newPerson = new person({
-        fullname: fullname,
-        email: email,
-      });
-    }
+    let isExisPerson = await person.findOne({ email: email });
 
     let newOrganization = new organization({
       organizations: organizations,
@@ -68,25 +78,41 @@ const createOrganization = async (req, res) => {
       phone: phone,
       post: post,
       assistants: assistants,
+      city: city,
       social: social,
+      view: view,
       area: area,
     });
 
-    //guardo la org para usar el id
-    const resultOrg = await newOrganization.save();
+    await newOrganization.save();
 
-    //asigno org al registro person
-    findPerson.organization = [...findPerson.organization, resultOrg._id];
+    if (!isExisPerson) {
+      let newPerson = new person({
+        email: email,
+        fullname: fullname,
+      });
 
-    //salvo cambios en person
-    await findPerson.save();
+      newPerson.organization = [...newPerson.organization, newOrganization._id];
+      await newPerson.save();
+      return res.status(201), json({ message: "Usuario registrado!" });
+    }
 
-    res.status(201).json({ message: "Registro exitoso!" });
+    isExisPerson.organization = [
+      ...isExisPerson.organization,
+      newOrganization._id,
+    ];
+    await isExisPerson.save();
+    res.status(201).json({ message: "ya existes pero agregado!" });
   } catch (err) {
     handlerHttpError(res, `ERROR_OCURRIDO_EN_PETICION`, 400);
   }
 };
 
+/**
+ * !TODO: actualizar status!
+ * @param {*} req
+ * @param {*} res
+ */
 const putOrganizationById = async (req, res) => {
   const { id } = req.params;
   const { view } = matchedData(req);

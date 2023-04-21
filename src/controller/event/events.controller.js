@@ -7,7 +7,7 @@ const {
   validExtensionImage,
   validExtensionFile,
 } = require("../../libs/validExtensionFiles");
-const { clearText } = require("../../libs/validateTextFiltro");
+
 /**
  * !TODO: listar todos los eventos
  */
@@ -20,7 +20,7 @@ const getAllEvents = async () => {
 };
 
 /**
- * !TODO: agregar un nuevo evento
+ * !TODO: Creacion del evento a detalle
  */
 const createEvent = async (req, res) => {
   try {
@@ -141,6 +141,12 @@ const updateEventByid = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: Eliminado del evento
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const deleteEventByid = async (req, res) => {
   try {
     req = matchedData(req);
@@ -153,7 +159,9 @@ const deleteEventByid = async (req, res) => {
     }
 
     const result = await event.delete({ _id: id });
-    res.status(200).json({ message: "Evento eliminado!" });
+    res
+      .status(200)
+      .json({ message: `El Evento ${result.title} ha sido eliminado!` });
   } catch (error) {
     handlerHttpError(res, "Error al eliminar, intenta despues");
   }

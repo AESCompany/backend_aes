@@ -1,7 +1,7 @@
 const { role } = require("../models");
 const { category } = require("../models");
 const { tag } = require("../models");
-const { area } = require("../models");
+const { areas } = require("../models");
 const { user } = require("../models");
 /**
  *!TODO: creacion de roles base
@@ -72,7 +72,7 @@ const createTags = async () => {
 
 const createAreas = async () => {
   try {
-    const count = await area.estimatedDocumentCount();
+    const count = await areas.estimatedDocumentCount();
     if (count > 0) return;
     const values = await Promise.all([
       new area({ name: "Salud Mental" }).save(),
