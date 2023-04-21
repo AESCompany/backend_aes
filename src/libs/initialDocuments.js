@@ -75,10 +75,10 @@ const createAreas = async () => {
     const count = await areas.estimatedDocumentCount();
     if (count > 0) return;
     const values = await Promise.all([
-      new area({ name: "Salud Mental" }).save(),
-      new area({ name: "Salud Física" }).save(),
-      new area({ name: "Salud Social" }).save(),
-      new area({ name: "Salud Ambiental" }).save(),
+      new areas({ name: "Salud Mental" }).save(),
+      new areas({ name: "Salud Física" }).save(),
+      new areas({ name: "Salud Social" }).save(),
+      new areas({ name: "Salud Ambiental" }).save(),
     ]);
     console.log(values);
   } catch (error) {
