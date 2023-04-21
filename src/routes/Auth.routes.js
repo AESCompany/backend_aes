@@ -16,5 +16,6 @@ authRoute.get("/dashboard", isAuth, (req, res) => {
   }
 });
 authRoute.post("/:id/reset-password", AuthController.changePassword);
+authRoute.post("/:id/change-password", AuthController.changePasswordSuperAdmin);
 
 module.exports = authRoute;

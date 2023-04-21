@@ -18,7 +18,7 @@ fs.readdirSync(PATH_ROUTES).filter((file) => {
     routes.use(`/${fileClean}`, require(`./${file}`));
   } else {
     routes.use("/notfound", (req, res) => {
-      res.status(404).json({ message: "Algo inesperado sucedio :') !" });
+      res.status(404).json({ message: "Algo inesperado sucedio 🤦  !" });
     });
   }
 });

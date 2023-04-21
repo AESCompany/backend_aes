@@ -100,8 +100,41 @@ const changePassword = async (req, res) => {
   }
 };
 
+/**
+ * !TODO: Cambio de contraseña
+ */
+const changePasswordSuperAdmin = async (req, res) => {
+  const { id } = req.params;
+  const { newpassword } = req.body;
+
+  try {
+    const isExist = await user.findOne({ _id: id });
+
+    if (!isExist || isExist.status === false) {
+      return handlerHttpError(res, "error con el usuario", 404);
+    }
+
+    if (!newpassword) {
+      return handlerHttpError(res, "estas cambiando la contraseña?", 404);
+    }
+
+    //encryto nueva contraseña
+    const encryptNewPass = await user.encryptPassword(newpassword);
+
+    //solo si es distinto lo cambio
+    isExist.password = encryptNewPass;
+
+    const data = await isExist.save();
+    res.send({ succes: true, message: "Contraseña actualizada!" });
+  } catch (error) {
+    console.error(error);
+    handlerHttpError(res, "No se pudo realizar la acción", 500);
+  }
+};
+
 module.exports = {
   authLogin,
   logOut,
   changePassword,
+  changePasswordSuperAdmin,
 };
