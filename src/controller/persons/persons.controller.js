@@ -41,9 +41,7 @@ const RegisterPerson = async (req, res) => {
       });
 
       await newPerson.save();
-      return res
-        .status(201)
-        .json({ message: "Persona, registrado con éxito!!" });
+      return res.status(201).json({ message: "Registro con éxito!!" });
     }
 
     if (getPerson.events.includes(events)) {
@@ -52,9 +50,13 @@ const RegisterPerson = async (req, res) => {
 
     getPerson.events.push(events);
     await getPerson.save();
-    res.status(201).json({ message: "Registro éxitoso!" });
+    res.status(201).json({ message: "Registro con éxito!!" });
   } catch (error) {
-    handlerHttpError(res, "Persona, no pudo registrarse", 404);
+    handlerHttpError(
+      res,
+      "ERR_REGISTER_no pudo registrarse, algo inesperado ha sucedido",
+      404
+    );
   }
 };
 

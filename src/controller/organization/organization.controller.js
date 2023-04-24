@@ -94,7 +94,7 @@ const createOrganization = async (req, res) => {
 
       newPerson.organization = [...newPerson.organization, newOrganization._id];
       await newPerson.save();
-      return res.status(201), json({ message: "Usuario registrado!" });
+      return res.status(201), json({ message: "Registro con éxito!" });
     }
 
     isExisPerson.organization = [
@@ -102,7 +102,7 @@ const createOrganization = async (req, res) => {
       newOrganization._id,
     ];
     await isExisPerson.save();
-    res.status(201).json({ message: "ya existes pero agregado!" });
+    res.status(201).json({ message: "Registro con éxito!!" });
   } catch (err) {
     handlerHttpError(res, `ERROR_OCURRIDO_EN_PETICION`, 400);
   }

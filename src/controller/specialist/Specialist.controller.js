@@ -67,7 +67,7 @@ const registerSpecialist = async (req, res) => {
       personRecord.specialist.push(newSpecialist._id);
       await personRecord.save();
     }
-    res.status(201).json({ message: "Specialist registrado con éxito!" });
+    res.status(201).json({ message: "Registrado con éxito!" });
   } catch (error) {
     handlerHttpError(res, "Specialist no pudo registrarse ", 404);
   }
