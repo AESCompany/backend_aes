@@ -3,6 +3,9 @@ const { category } = require("../models");
 const { tag } = require("../models");
 const { areas } = require("../models");
 const { user } = require("../models");
+const { countries } = require("../models");
+const axios = require("axios");
+
 /**
  *!TODO: creacion de roles base
  */
@@ -107,10 +110,38 @@ const createSuperAdmin = async () => {
   }
 };
 
+const fillDocumentCountry = async () => {
+  try {
+    const count = await countries.estimatedDocumentCount();
+
+    if (count > 0) return;
+
+    const arrayCountry = [];
+
+    const api = await axios.get(`https://restcountries.com/v3.1/all`);
+    api.data.forEach((c) => {
+      arrayCountry.push({
+        name: c.name.common,
+      });
+    });
+
+    const loadCountry = arrayCountry.forEach((country) => {
+      const newlist = new countries({
+        name: country.name,
+      });
+      newlist.save();
+    });
+    console.log(loadCountry);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   createRoles,
   createCategories,
   createTags,
   createAreas,
   createSuperAdmin,
+  fillDocumentCountry,
 };

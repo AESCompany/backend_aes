@@ -8,6 +8,7 @@ const {
   createTags,
   createAreas,
   createSuperAdmin,
+  fillDocumentCountry,
 } = require("../libs/initialDocuments");
 
 const routes = require("../routes");
@@ -21,6 +22,7 @@ createCategories();
 createTags();
 createAreas();
 createSuperAdmin();
+fillDocumentCountry();
 
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
