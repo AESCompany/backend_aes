@@ -9,7 +9,7 @@ const CreateOrganization = [
   check("phone").exists().notEmpty().isMobilePhone(),
   check("post").exists().notEmpty(),
   check("assistants").exists().notEmpty().isNumeric(),
-  check("social").exists().notEmpty().isString(),
+  check("social").exists().notEmpty().isObject(),
   check("area").exists().notEmpty().isMongoId(),
   (req, res, next) => {
     return validateResults(req, res, next);
